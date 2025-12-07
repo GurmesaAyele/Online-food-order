@@ -1,0 +1,9 @@
+@echo off
+echo Starting Customer App...
+echo.
+cd frontend\customer
+echo Installing dependencies (first time only)...
+call npm install
+echo.
+echo Starting development server...
+npm run dev

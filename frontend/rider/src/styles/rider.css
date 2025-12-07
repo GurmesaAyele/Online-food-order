@@ -1,0 +1,321 @@
+/* Rider Dashboard - External CSS */
+/* Theme: Green - Active and Go */
+
+:root {
+  --rider-primary: #10B981;
+  --rider-secondary: #059669;
+  --rider-accent: #34D399;
+  --rider-dark: #064E3B;
+  --rider-light: #D1FAE5;
+  --rider-warning: #F59E0B;
+  --rider-info: #3B82F6;
+}
+
+/* Rider Dashboard Layout */
+.rider-sidebar {
+  background: linear-gradient(180deg, var(--rider-primary) 0%, var(--rider-secondary) 100%);
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: 4px 0 12px rgba(16, 185, 129, 0.2);
+}
+
+.rider-sidebar-header {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.rider-sidebar-icon {
+  width: 64px;
+  height: 64px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-center;
+  margin: 0 auto 12px;
+  color: var(--rider-primary);
+}
+
+.rider-sidebar-title {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.rider-nav-item {
+  color: rgba(255, 255, 255, 0.9);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 4px 12px;
+  border-radius: 10px;
+}
+
+.rider-nav-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.rider-nav-item.active {
+  background: white;
+  color: var(--rider-primary);
+  font-weight: 600;
+}
+
+.rider-main-content {
+  margin-left: 260px;
+  padding: 32px;
+  background: #F0FDF4;
+  min-height: 100vh;
+}
+
+.rider-stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+  border-top: 4px solid var(--rider-primary);
+}
+
+.rider-stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-center;
+  margin-bottom: 16px;
+}
+
+.rider-stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--rider-dark);
+  margin: 8px 0;
+}
+
+.rider-stat-label {
+  color: #6B7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rider-order-card {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
+  border: 2px solid var(--rider-light);
+  transition: all 0.3s ease;
+}
+
+.rider-order-card:hover {
+  border-color: var(--rider-primary);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.15);
+  transform: translateY(-2px);
+}
+
+.rider-order-header {
+  display: flex;
+  justify-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--rider-light);
+}
+
+.rider-order-id {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--rider-dark);
+}
+
+.rider-status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.rider-status-available {
+  background: var(--rider-light);
+  color: var(--rider-dark);
+}
+
+.rider-status-active {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+.rider-status-completed {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.rider-btn-accept {
+  background: var(--rider-primary);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.rider-btn-accept:hover {
+  background: var(--rider-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.rider-btn-navigate {
+  background: var(--rider-info);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rider-btn-complete {
+  background: var(--rider-accent);
+  color: var(--rider-dark);
+  padding: 12px 28px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rider-earnings-card {
+  background: linear-gradient(135deg, var(--rider-primary) 0%, var(--rider-secondary) 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+}
+
+.rider-earnings-amount {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 16px 0;
+}
+
+.rider-earnings-label {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* Login Page */
+.rider-login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--rider-primary) 0%, var(--rider-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-center;
+  padding: 20px;
+}
+
+.rider-login-card {
+  background: white;
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
+  max-width: 450px;
+  width: 100%;
+}
+
+.rider-login-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--rider-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-center;
+  margin: 0 auto 24px;
+  color: white;
+}
+
+.rider-login-title {
+  color: var(--rider-dark);
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.rider-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.rider-input:focus {
+  border-color: var(--rider-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.rider-btn-primary {
+  width: 100%;
+  background: var(--rider-primary);
+  color: white;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rider-btn-primary:hover {
+  background: var(--rider-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+}
+
+.rider-location-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: var(--rider-light);
+  border-radius: 10px;
+  margin: 12px 0;
+}
+
+.rider-location-icon {
+  color: var(--rider-primary);
+  flex-shrink: 0;
+}
+
+.rider-performance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--rider-light);
+  color: var(--rider-dark);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+}

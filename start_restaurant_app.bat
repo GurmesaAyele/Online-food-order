@@ -1,0 +1,9 @@
+@echo off
+echo Starting Restaurant Dashboard...
+echo.
+cd frontend\restaurant
+echo Installing dependencies (first time only)...
+call npm install
+echo.
+echo Starting development server...
+npm run dev
