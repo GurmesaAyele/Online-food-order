@@ -1,0 +1,165 @@
+.restaurant-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #f0f2f5;
+}
+
+.restaurant-sidebar {
+  width: 250px;
+  background: linear-gradient(180deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar-nav {
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+}
+
+.sidebar-logout {
+  margin: 1rem 1.5rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.sidebar-logout:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.restaurant-main {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.restaurant-header {
+  margin-bottom: 2rem;
+}
+
+.restaurant-header h1 {
+  color: #1e3a8a;
+  margin-bottom: 0.5rem;
+}
+
+.restaurant-header p {
+  color: #666;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stat-card.blue { border-left: 4px solid #3b82f6; }
+.stat-card.green { border-left: 4px solid #10b981; }
+.stat-card.orange { border-left: 4px solid #f59e0b; }
+.stat-card.purple { border-left: 4px solid #8b5cf6; }
+
+.stat-icon {
+  font-size: 2.5rem;
+}
+
+.stat-info h3 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.stat-info p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.content-section {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.section-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.section-card h2 {
+  color: #1e3a8a;
+  margin-bottom: 1rem;
+}
+
+.orders-table {
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.no-data {
+  color: #666;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.action-btn {
+  padding: 1rem;
+  background: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.action-btn:hover {
+  background: #1e40af;
+}

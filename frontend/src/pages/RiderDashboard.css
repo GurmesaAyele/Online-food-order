@@ -1,0 +1,198 @@
+.rider-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  padding: 2rem;
+}
+
+.rider-header {
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.header-left h1 {
+  color: #10b981;
+  margin-bottom: 0.25rem;
+}
+
+.header-left p {
+  color: #666;
+}
+
+.rider-logout {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.rider-logout:hover {
+  background: #dc2626;
+}
+
+.rider-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.rider-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.rider-stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.rider-stat-card.green { border-left: 5px solid #10b981; }
+.rider-stat-card.blue { border-left: 5px solid #3b82f6; }
+.rider-stat-card.orange { border-left: 5px solid #f59e0b; }
+.rider-stat-card.purple { border-left: 5px solid #8b5cf6; }
+
+.rider-stat-card .stat-icon {
+  font-size: 3rem;
+}
+
+.stat-details h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.stat-details p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.rider-main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+}
+
+.available-orders {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.available-orders h2 {
+  color: #10b981;
+  margin-bottom: 1.5rem;
+}
+
+.orders-container {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-orders {
+  text-align: center;
+}
+
+.no-orders-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.no-orders p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.refresh-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.refresh-btn:hover {
+  background: #059669;
+}
+
+.rider-sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rider-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.rider-card h3 {
+  color: #10b981;
+  margin-bottom: 1rem;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-item span {
+  color: #666;
+}
+
+.summary-item strong {
+  color: #333;
+}
+
+.action-button {
+  width: 100%;
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  transition: background 0.3s;
+}
+
+.action-button:last-child {
+  margin-bottom: 0;
+}
+
+.action-button:hover {
+  background: #059669;
+}
+
+@media (max-width: 968px) {
+  .rider-main-content {
+    grid-template-columns: 1fr;
+  }
+}

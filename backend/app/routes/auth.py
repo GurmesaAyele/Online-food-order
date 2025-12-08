@@ -13,7 +13,7 @@ from app.auth import (
 
 router = APIRouter()
 
-@router.post("/register", response_model=UserSchema)
+@router.post("/register", response_model=Token)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     # Check if user exists
     db_user = db.query(User).filter(User.email == user.email).first()
@@ -35,7 +35,18 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+    
+    # Create access token for auto-login
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": db_user.email}, expires_delta=access_token_expires
+    )
+    
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": db_user
+    }
 
 @router.post("/login", response_model=Token)
 def login(user_credentials: UserLogin, db: Session = Depends(get_db)):
