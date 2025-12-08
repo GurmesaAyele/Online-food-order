@@ -1,11 +1,22 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import './AdminDashboard.css'
 
 function AdminDashboard() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null)
   const [activeTab, setActiveTab] = useState('overview')
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    restaurants: 0,
+    riders: 0,
+    pendingRequests: 0
+  })
+  const [requests, setRequests] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     const authData = localStorage.getItem('auth-storage')
@@ -13,6 +24,9 @@ function AdminDashboard() {
       const { state } = JSON.parse(authData)
       if (state.user && state.user.role === 'admin') {
         setUser(state.user)
+        setToken(state.token)
+        fetchStats(state.token)
+        fetchRequests(state.token)
       } else {
         navigate('/login')
       }
@@ -20,6 +34,72 @@ function AdminDashboard() {
       navigate('/login')
     }
   }, [navigate])
+
+  const fetchStats = async (authToken) => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/admin/stats', {
+        headers: { Authorization: `Bearer ${authToken}` }
+      })
+      setStats(response.data)
+    } catch (error) {
+      console.error('Error fetching stats:', error)
+    }
+  }
+
+  const fetchRequests = async (authToken) => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/requests/', {
+        headers: { Authorization: `Bearer ${authToken}` }
+      })
+      setRequests(response.data)
+      setStats(prev => ({ ...prev, pendingRequests: response.data.length }))
+    } catch (error) {
+      console.error('Error fetching requests:', error)
+    }
+  }
+
+  const handleApprove = async (requestId) => {
+    const password = prompt('Enter a password for the new user:')
+    if (!password) return
+
+    setLoading(true)
+    setMessage('')
+    try {
+      await axios.post(
+        `http://localhost:8000/api/requests/${requestId}/approve?password=${password}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      setMessage('Request approved successfully!')
+      fetchRequests(token)
+      fetchStats(token)
+    } catch (error) {
+      setMessage(error.response?.data?.detail || 'Failed to approve request')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleReject = async (requestId) => {
+    if (!confirm('Are you sure you want to reject this request?')) return
+
+    setLoading(true)
+    setMessage('')
+    try {
+      await axios.post(
+        `http://localhost:8000/api/requests/${requestId}/reject`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      setMessage('Request rejected successfully!')
+      fetchRequests(token)
+      fetchStats(token)
+    } catch (error) {
+      setMessage(error.response?.data?.detail || 'Failed to reject request')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleLogout = () => {
     localStorage.removeItem('auth-storage')
@@ -106,7 +186,7 @@ function AdminDashboard() {
           <div className="admin-stat-card purple">
             <div className="stat-icon">👥</div>
             <div className="stat-content">
-              <h3>0</h3>
+              <h3>{stats.totalUsers}</h3>
               <p>Total Users</p>
             </div>
           </div>
@@ -114,7 +194,7 @@ function AdminDashboard() {
           <div className="admin-stat-card blue">
             <div className="stat-icon">🏪</div>
             <div className="stat-content">
-              <h3>0</h3>
+              <h3>{stats.restaurants}</h3>
               <p>Restaurants</p>
             </div>
           </div>
@@ -122,7 +202,7 @@ function AdminDashboard() {
           <div className="admin-stat-card green">
             <div className="stat-icon">🚴</div>
             <div className="stat-content">
-              <h3>0</h3>
+              <h3>{stats.riders}</h3>
               <p>Riders</p>
             </div>
           </div>
@@ -138,7 +218,7 @@ function AdminDashboard() {
           <div className="admin-stat-card red">
             <div className="stat-icon">📝</div>
             <div className="stat-content">
-              <h3>0</h3>
+              <h3>{stats.pendingRequests}</h3>
               <p>Pending Requests</p>
             </div>
           </div>
@@ -177,8 +257,77 @@ function AdminDashboard() {
           {activeTab === 'requests' && (
             <div className="admin-card">
               <h2>Pending Requests</h2>
+              {message && (
+                <div className={`message ${message.includes('success') ? 'success' : 'error'}`}>
+                  {message}
+                </div>
+              )}
               <div className="requests-table">
-                <p className="no-data">No pending requests</p>
+                {requests.length === 0 ? (
+                  <p className="no-data">No pending requests</p>
+                ) : (
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Details</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {requests.map((request) => (
+                        <tr key={request.id}>
+                          <td>
+                            <span className={`badge ${request.request_type}`}>
+                              {request.request_type === 'restaurant' ? '🏪 Restaurant' : '🚴 Rider'}
+                            </span>
+                          </td>
+                          <td>{request.full_name}</td>
+                          <td>{request.email}</td>
+                          <td>{request.phone}</td>
+                          <td>
+                            {request.request_type === 'restaurant' ? (
+                              <div className="details">
+                                <div><strong>Restaurant:</strong> {request.restaurant_name}</div>
+                                <div><strong>Address:</strong> {request.restaurant_address}</div>
+                                <div><strong>License:</strong> {request.business_license}</div>
+                              </div>
+                            ) : (
+                              <div className="details">
+                                <div><strong>Vehicle:</strong> {request.vehicle_type}</div>
+                                <div><strong>License:</strong> {request.license_number}</div>
+                                <div><strong>Address:</strong> {request.address}</div>
+                              </div>
+                            )}
+                          </td>
+                          <td>{new Date(request.created_at).toLocaleDateString()}</td>
+                          <td>
+                            <div className="action-buttons">
+                              <button
+                                onClick={() => handleApprove(request.id)}
+                                disabled={loading}
+                                className="btn-approve"
+                              >
+                                ✓ Approve
+                              </button>
+                              <button
+                                onClick={() => handleReject(request.id)}
+                                disabled={loading}
+                                className="btn-reject"
+                              >
+                                ✗ Reject
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </div>
           )}
