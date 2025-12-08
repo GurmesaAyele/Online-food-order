@@ -242,7 +242,7 @@ def send_approval_email(recipient_email: str, full_name: str, temp_password: str
         return False
 
 
-def send_rejection_email(recipient_email: str, full_name: str, role: str):
+def send_rejection_email(recipient_email: str, full_name: str, role: str, reason: str = ""):
     """
     Send rejection email to user whose request was rejected
     """
@@ -302,7 +302,9 @@ def send_rejection_email(recipient_email: str, full_name: str, role: str):
                     
                     <p>After careful review, we regret to inform you that we are unable to approve your application at this time.</p>
                     
-                    <p>This decision may be due to various factors, and we encourage you to reapply in the future if circumstances change.</p>
+                    {f'<div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;"><strong>Reason:</strong><br>{reason}</div>' if reason else ''}
+                    
+                    <p>We encourage you to address any concerns and reapply in the future if circumstances change.</p>
                     
                     <p>If you have any questions, please contact us at {SENDER_EMAIL}</p>
                     
@@ -320,12 +322,16 @@ def send_rejection_email(recipient_email: str, full_name: str, role: str):
         </html>
         """
 
+        reason_text = f"\n\nReason: {reason}\n" if reason else ""
+        
         text_body = f"""
         Dear {full_name},
         
         Thank you for your interest in joining FoodHub as a {role.title()}.
         
         After careful review, we regret to inform you that we are unable to approve your application at this time.
+        {reason_text}
+        We encourage you to address any concerns and reapply in the future.
         
         If you have any questions, please contact us at {SENDER_EMAIL}
         

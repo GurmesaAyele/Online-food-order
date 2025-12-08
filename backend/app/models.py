@@ -47,6 +47,7 @@ class AccessRequest(Base):
     
     # Common fields
     additional_info = Column(Text)
+    rejection_reason = Column(Text)
     
     status = Column(Enum(RequestStatus), default=RequestStatus.pending, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

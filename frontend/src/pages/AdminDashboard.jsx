@@ -80,21 +80,25 @@ function AdminDashboard() {
   }
 
   const handleReject = async (requestId) => {
-    if (!confirm('Are you sure you want to reject this request?')) return
+    const reason = prompt('Please enter the reason for rejection:')
+    if (!reason || reason.trim() === '') {
+      setMessage('❌ Rejection reason is required')
+      return
+    }
 
     setLoading(true)
     setMessage('')
     try {
       await axios.post(
-        `http://localhost:8000/api/requests/${requestId}/reject`,
+        `http://localhost:8000/api/requests/${requestId}/reject?reason=${encodeURIComponent(reason)}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       )
-      setMessage('Request rejected successfully!')
+      setMessage('✅ Request rejected and notification sent with reason')
       fetchRequests(token)
       fetchStats(token)
     } catch (error) {
-      setMessage(error.response?.data?.detail || 'Failed to reject request')
+      setMessage('❌ ' + (error.response?.data?.detail || 'Failed to reject request'))
     } finally {
       setLoading(false)
     }

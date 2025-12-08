@@ -140,12 +140,18 @@ def approve_request(
     db.commit()
     
     # Send email with credentials
-    send_approval_email(
-        email=access_request.email,
+    print(f"\n🔔 Sending approval email to: {access_request.email}")
+    email_sent = send_approval_email(
+        recipient_email=access_request.email,
         full_name=access_request.full_name,
-        password=random_password,
+        temp_password=random_password,
         role=role
     )
+    
+    if email_sent:
+        print(f"✅ Email successfully sent to {access_request.email}")
+    else:
+        print(f"❌ Email failed to send to {access_request.email}")
     
     return {
         "message": "Request approved! Account created and credentials sent to email",
@@ -158,6 +164,7 @@ def approve_request(
 @router.post("/{request_id}/reject")
 def reject_request(
     request_id: int,
+    reason: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -174,15 +181,17 @@ def reject_request(
             detail="Request not found"
         )
     
-    # Update status
+    # Update status and reason
     access_request.status = RequestStatus.rejected
+    access_request.rejection_reason = reason
     db.commit()
     
-    # Send rejection email
+    # Send rejection email with reason
     send_rejection_email(
         recipient_email=access_request.email,
         full_name=access_request.full_name,
-        role=access_request.request_type
+        role=access_request.request_type,
+        reason=reason
     )
     
     return {"message": "Request rejected and notification sent"}
