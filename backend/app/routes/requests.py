@@ -4,7 +4,10 @@ from app.database import get_db
 from app.models import AccessRequest, User, RequestStatus
 from app.schemas import RestaurantRequest, RiderRequest, AccessRequestResponse
 from app.auth import get_password_hash, get_current_user
+from app.email_service import send_approval_email, send_rejection_email
 from typing import List
+import random
+import string
 
 router = APIRouter()
 
@@ -99,7 +102,6 @@ def get_all_requests(
 @router.post("/{request_id}/approve")
 def approve_request(
     request_id: int,
-    password: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -116,9 +118,12 @@ def approve_request(
             detail="Request not found"
         )
     
+    # Generate random password (10 characters: letters + digits)
+    random_password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+    
     # Create user account
     role = "restaurant" if access_request.request_type == "restaurant" else "rider"
-    hashed_password = get_password_hash(password)
+    hashed_password = get_password_hash(random_password)
     
     new_user = User(
         email=access_request.email,
@@ -134,7 +139,21 @@ def approve_request(
     
     db.commit()
     
-    return {"message": "Request approved and account created", "email": new_user.email}
+    # Send email with credentials
+    send_approval_email(
+        email=access_request.email,
+        full_name=access_request.full_name,
+        password=random_password,
+        role=role
+    )
+    
+    return {
+        "message": "Request approved! Account created and credentials sent to email",
+        "email": new_user.email,
+        "temp_password": random_password  # For testing only, remove in production
+    }
+
+
 
 @router.post("/{request_id}/reject")
 def reject_request(
@@ -155,7 +174,15 @@ def reject_request(
             detail="Request not found"
         )
     
+    # Update status
     access_request.status = RequestStatus.rejected
     db.commit()
     
-    return {"message": "Request rejected"}
+    # Send rejection email
+    send_rejection_email(
+        recipient_email=access_request.email,
+        full_name=access_request.full_name,
+        role=access_request.request_type
+    )
+    
+    return {"message": "Request rejected and notification sent"}

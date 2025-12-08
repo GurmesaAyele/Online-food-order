@@ -59,18 +59,17 @@ function AdminDashboard() {
   }
 
   const handleApprove = async (requestId) => {
-    const password = prompt('Enter a password for the new user:')
-    if (!password) return
+    if (!window.confirm('Approve this request? An account will be created and credentials will be sent to their email.')) return
 
     setLoading(true)
     setMessage('')
     try {
-      await axios.post(
-        `http://localhost:8000/api/requests/${requestId}/approve?password=${password}`,
+      const response = await axios.post(
+        `http://localhost:8000/api/requests/${requestId}/approve`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       )
-      setMessage('Request approved successfully!')
+      setMessage(`✅ ${response.data.message}`)
       fetchRequests(token)
       fetchStats(token)
     } catch (error) {
