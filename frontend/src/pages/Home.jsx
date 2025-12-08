@@ -25,74 +25,79 @@ function Home() {
 
       {/* How It Works */}
       <section className="how-it-works">
-        <div className="container">
-          <h2>How It Works</h2>
-          <div className="steps">
-            <div className="step">
-              <div className="step-icon">🔍</div>
-              <h3>Choose Restaurant</h3>
-              <p>Browse hundreds of restaurants</p>
-            </div>
-            <div className="step">
-              <div className="step-icon">🛒</div>
-              <h3>Place Order</h3>
-              <p>Add items and checkout</p>
-            </div>
-            <div className="step">
-              <div className="step-icon">🚴</div>
-              <h3>Get Delivered</h3>
-              <p>Track in real-time</p>
-            </div>
+        <h2 className="section-title">How It Works</h2>
+        <p className="section-subtitle">Get your favorite food delivered in just three simple steps</p>
+        <div className="steps">
+          <div className="step">
+            <div className="step-icon">🔍</div>
+            <h3>Choose Restaurant</h3>
+            <p>Browse hundreds of restaurants and discover amazing dishes near you</p>
+          </div>
+          <div className="step">
+            <div className="step-icon">🛒</div>
+            <h3>Place Order</h3>
+            <p>Add your favorite items to cart and checkout securely</p>
+          </div>
+          <div className="step">
+            <div className="step-icon">🚴</div>
+            <h3>Get Delivered</h3>
+            <p>Track your order in real-time and enjoy hot, fresh food</p>
           </div>
         </div>
       </section>
 
       {/* Features */}
       <section className="features">
-        <div className="container">
-          <h2>Why Choose Us</h2>
-          <div className="feature-grid">
-            <div className="feature">
-              <div className="feature-icon">⚡</div>
-              <h3>Fast Delivery</h3>
-              <p>30 minutes or less</p>
-            </div>
-            <div className="feature">
-              <div className="feature-icon">⭐</div>
-              <h3>Top Restaurants</h3>
-              <p>Best in your area</p>
-            </div>
-            <div className="feature">
-              <div className="feature-icon">📍</div>
-              <h3>Live Tracking</h3>
-              <p>Real-time updates</p>
-            </div>
-            <div className="feature">
-              <div className="feature-icon">🔒</div>
-              <h3>Secure Payment</h3>
-              <p>100% safe</p>
-            </div>
+        <h2 className="section-title">Why Choose Us</h2>
+        <p className="section-subtitle">We provide the best food delivery experience with unmatched quality and service</p>
+        <div className="features-grid">
+          <div className="feature">
+            <div className="feature-icon">⚡</div>
+            <h3>Lightning Fast Delivery</h3>
+            <p>Get your food delivered in 30 minutes or less. We value your time and ensure quick service.</p>
+          </div>
+          <div className="feature">
+            <div className="feature-icon">⭐</div>
+            <h3>Top Rated Restaurants</h3>
+            <p>Partner with the best restaurants in your area. Quality food from trusted sources.</p>
+          </div>
+          <div className="feature">
+            <div className="feature-icon">📍</div>
+            <h3>Real-Time Tracking</h3>
+            <p>Track your order from restaurant to doorstep. Know exactly when your food arrives.</p>
+          </div>
+          <div className="feature">
+            <div className="feature-icon">🔒</div>
+            <h3>Secure Payments</h3>
+            <p>100% safe and secure payment options. Your financial information is always protected.</p>
+          </div>
+          <div className="feature">
+            <div className="feature-icon">💰</div>
+            <h3>Best Prices</h3>
+            <p>Competitive pricing with regular discounts and offers. Great value for your money.</p>
+          </div>
+          <div className="feature">
+            <div className="feature-icon">🎯</div>
+            <h3>Wide Selection</h3>
+            <p>Choose from hundreds of restaurants and thousands of dishes. Something for everyone.</p>
           </div>
         </div>
       </section>
 
       {/* Partner Section */}
-      <section className="partner-section">
-        <div className="container">
-          <h2>Partner With Us</h2>
-          <div className="partner-cards">
-            <Link to="/request-restaurant" className="partner-card">
-              <div className="partner-icon">🏪</div>
-              <h3>Restaurant Owner?</h3>
-              <p>Join our platform and reach thousands of customers</p>
-              <span className="link-text">Request to Join →</span>
-            </Link>
-            <Link to="/request-rider" className="partner-card">
-              <div className="partner-icon">🚴</div>
-              <h3>Become a Rider</h3>
-              <p>Earn money with flexible hours</p>
-              <span className="link-text">Apply Now →</span>
-            </Link>
+      <section className="partner">
+        <h2 className="section-title">Partner With Us</h2>
+        <p className="section-subtitle">Join our growing network and be part of the food delivery revolution</p>
+        <div className="partner-options">
+          <div className="partner-card">
+            <h3>🏪 Restaurant Owner</h3>
+            <p>Expand your business and reach thousands of hungry customers. Increase your revenue with our platform.</p>
+            <Link to="/request-restaurant" className="btn">Join as Restaurant</Link>
+          </div>
+          <div className="partner-card">
+            <h3>🚴 Delivery Rider</h3>
+            <p>Earn money on your schedule with flexible hours. Be your own boss and make great income.</p>
+            <Link to="/request-rider" className="btn">Become a Rider</Link>
           </div>
         </div>
       </section>

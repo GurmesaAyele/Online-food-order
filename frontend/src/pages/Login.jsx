@@ -87,6 +87,16 @@ function Login() {
           </button>
         </form>
 
+        <div className="test-accounts">
+          <p style={{fontSize: '0.85rem', color: '#666', marginBottom: '0.5rem', fontWeight: '600'}}>🔐 Test Accounts (Password: admin123)</p>
+          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.75rem', color: '#888'}}>
+            <div>👤 customer@test.com</div>
+            <div>🏪 restaurant@test.com</div>
+            <div>🚴 rider@test.com</div>
+            <div>⚙️ admin@foodhub.com</div>
+          </div>
+        </div>
+
         <div className="login-footer">
           <p>Don't have an account? <Link to="/register">Sign up as Customer</Link></p>
           <p className="partner-links">
