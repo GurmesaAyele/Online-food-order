@@ -1,246 +1,132 @@
-# 🍕 Food Delivery Platform - Complete System
+# Food Delivery Platform
 
-A modern, full-stack food delivery platform with **four complete dashboards**, real-time tracking, and role-based authentication.
+A simple food delivery platform built with React (Vite) + FastAPI + MySQL.
 
-## 🎯 Four Dashboards
+## Tech Stack
 
-| Dashboard | Port | Role | Status |
-|-----------|------|------|--------|
-| **Customer** | 5174 | `customer` | ✅ Complete |
-| **Restaurant** | 5175 | `restaurant` | ✅ Complete |
-| **Rider** | 5176 | `rider` | ✅ Complete |
-| **Admin** | 5177 | `admin` | 🔄 Ready |
+### Frontend
+- React 18
+- Vite
+- React Router
+- Axios
+- Pure CSS (no frameworks)
 
-## 🚀 Quick Start
+### Backend
+- FastAPI
+- MySQL
+- SQLAlchemy
+- JWT Authentication
+- Bcrypt
 
-### 1. Start Backend
+## Project Structure
+
+```
+├── frontend/              # React frontend
+│   ├── src/
+│   │   ├── pages/        # Page components
+│   │   ├── App.jsx       # Main app component
+│   │   └── main.jsx      # Entry point
+│   └── package.json
+│
+└── backend/              # FastAPI backend
+    ├── app/
+    │   ├── routes/       # API routes
+    │   ├── models.py     # Database models
+    │   ├── schemas.py    # Pydantic schemas
+    │   ├── auth.py       # Authentication
+    │   └── database.py   # Database connection
+    ├── main.py           # FastAPI app
+    └── requirements.txt
+```
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js (v18+)
+- Python (v3.10+)
+- MySQL (via WampServer)
+- MySQL password: `14162121`
+
+### 1. Database Setup
+
+Create database in MySQL:
+```sql
+CREATE DATABASE food_delivery;
+```
+
+### 2. Backend Setup
+
 ```bash
+# Navigate to backend
 cd backend
-venv\Scripts\activate
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+venv\Scripts\activate  # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start server
 python start.py
 ```
-**Backend running at**: http://localhost:8000
 
-### 2. Start All Dashboards
+Backend will run on: http://localhost:8000
+
+### 3. Frontend Setup
+
 ```bash
-start_all_dashboards.bat
+# Navigate to frontend
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-Or start individually:
-```bash
-# Customer
-cd frontend/customer && npm run dev
+Frontend will run on: http://localhost:5173
 
-# Restaurant
-cd frontend/restaurant && npm run dev
+## API Endpoints
 
-# Rider
-cd frontend/rider && npm install && npm run dev
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
 
-# Admin
-cd frontend/admin && npm install && npm run dev
+### Users
+- `GET /api/users/me` - Get current user info (protected)
+
+## Environment Variables
+
+Backend `.env` file:
+```
+DATABASE_URL=mysql+pymysql://root:14162121@localhost/food_delivery
+SECRET_KEY=your-secret-key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
-## 📁 Project Structure
+## Features
 
-```
-food-delivery-platform/
-├── frontend/
-│   ├── customer/      # Customer web app
-│   ├── restaurant/    # Restaurant dashboard
-│   ├── rider/         # Rider dashboard
-│   └── admin/         # Admin panel
-├── backend/           # FastAPI backend
-├── docs/              # Documentation
-└── database/          # SQL scripts
-```
+- ✅ User authentication (register/login)
+- ✅ JWT token-based auth
+- ✅ Role-based access (customer, restaurant, rider, admin)
+- ✅ MySQL database
+- ✅ Clean React + CSS frontend
+- ✅ FastAPI backend with auto-docs
 
-## 🔐 User Roles & Features
+## API Documentation
 
-### 👤 Customer (Port 5174)
-- Browse restaurants
-- Order food
-- Track deliveries
-- Payment options
-- Order history
+Once backend is running, visit:
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
 
-### 🍽️ Restaurant (Port 5175)
-- Manage menu
-- Accept orders
-- Update status
-- View analytics
-- Track revenue
+## Default User Roles
 
-### 🚴 Rider (Port 5176)
-- Available orders
-- Accept deliveries
-- Update status
-- Track earnings
-- Performance stats
-
-### 👨‍💼 Admin (Port 5177)
-- User management
-- Restaurant verification
-- Order monitoring
-- Platform analytics
-- System settings
-
-## 🛠️ Tech Stack
-
-**Frontend**: React 18 + Vite + TailwindCSS + Zustand  
-**Backend**: FastAPI + SQLAlchemy + MySQL  
-**Auth**: JWT tokens  
-**Real-time**: WebSockets  
-
-## 📚 Documentation
-
-- [Four Dashboards Guide](docs/FOUR_DASHBOARDS_GUIDE.md)
-- [Complete System Overview](docs/COMPLETE_SYSTEM_OVERVIEW.md)
-- [Project Structure](docs/PROJECT_STRUCTURE.md)
-- [Quick Start Guide](docs/QUICKSTART.md)
-- [Features List](docs/FEATURES.md)
-- [Architecture](docs/ARCHITECTURE.md)
-
-## 🎯 Create Test Accounts
-
-Use API docs at http://localhost:8000/docs
-
-**Customer**:
-```json
-{
-  "email": "customer@test.com",
-  "password": "password123",
-  "full_name": "Test Customer",
-  "phone": "1234567890",
-  "role": "customer"
-}
-```
-
-**Restaurant**:
-```json
-{
-  "email": "restaurant@test.com",
-  "password": "password123",
-  "full_name": "Test Restaurant",
-  "phone": "1234567890",
-  "role": "restaurant"
-}
-```
-
-**Rider**:
-```json
-{
-  "email": "rider@test.com",
-  "password": "password123",
-  "full_name": "Test Rider",
-  "phone": "1234567890",
-  "role": "rider"
-}
-```
-
-**Admin**:
-```json
-{
-  "email": "admin@test.com",
-  "password": "password123",
-  "full_name": "Admin User",
-  "phone": "1234567890",
-  "role": "admin"
-}
-```
-
-## ✅ What's Included
-
-- ✅ Complete authentication system
-- ✅ Role-based access control
-- ✅ Real-time order tracking
-- ✅ Shopping cart with persistence
-- ✅ Menu management (CRUD)
-- ✅ Order management
-- ✅ Earnings tracking
-- ✅ Platform analytics
-- ✅ Responsive design
-- ✅ Beautiful UI with TailwindCSS
-
-## 🔧 Requirements
-
-- Python 3.9+
-- Node.js 18+
-- MySQL (WampServer)
-- npm/yarn
-
-## 📊 Database
-
-MySQL database with tables:
-- users (multi-role)
-- restaurants
-- menu_items
-- orders
-- riders
-- reviews
-- promotions
-
-## 🌐 Access Points
-
-| Service | URL |
-|---------|-----|
-| Backend API | http://localhost:8000 |
-| API Documentation | http://localhost:8000/docs |
-| Customer App | http://localhost:5174 |
-| Restaurant Dashboard | http://localhost:5175 |
-| Rider Dashboard | http://localhost:5176 |
-| Admin Panel | http://localhost:5177 |
-
-## 🎉 Features
-
-### Customer Features
-- Restaurant discovery with search/filters
-- Menu browsing
-- Shopping cart
-- Multiple payment methods
-- Real-time order tracking
-- Order history
-- Rating system
-
-### Restaurant Features
-- Dashboard with statistics
-- Order management (accept/decline/update)
-- Complete menu management
-- Sales analytics
-- Profile management
-
-### Rider Features
-- Available orders browsing
-- Accept/reject deliveries
-- Delivery status updates
-- Earnings tracker (daily/weekly/monthly)
-- Performance statistics
-- Vehicle information
-
-### Admin Features
-- Platform-wide statistics
-- User management (all roles)
-- Restaurant verification
-- Order monitoring
-- Rider management
-- Revenue analytics
-- System configuration
-
-## 🚀 Production Ready
-
-This platform is production-ready with:
-- Secure authentication
-- Input validation
-- Error handling
-- Responsive design
-- Optimized performance
-- Clean architecture
-- Comprehensive documentation
-
-## 📝 License
-
-This project is for educational and portfolio purposes.
-
----
-
-**Built with ❤️ using React, FastAPI, and MySQL**
+- `customer` - Regular users who order food
+- `restaurant` - Restaurant owners
+- `rider` - Delivery riders
+- `admin` - Platform administrators
