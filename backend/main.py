@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
-from app.routes import auth, users, requests, admin, restaurant, profile, restaurant
+from app.routes import auth, users, requests, admin, restaurant, profile, rider, customer
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -24,7 +24,15 @@ app.include_router(requests.router, prefix="/api/requests", tags=["requests"])
 app.include_router(admin.router, prefix="/api/admin", tags=["admin"])
 app.include_router(restaurant.router, prefix="/api/restaurant", tags=["restaurant"])
 app.include_router(profile.router, prefix="/api/profile", tags=["profile"])
-app.include_router(restaurant.router, prefix="/api/restaurant", tags=["restaurant"])
+app.include_router(rider.router, prefix="/api/rider", tags=["rider"])
+
+# Customer routes
+try:
+    from app.routes import customer
+    app.include_router(customer.router, prefix="/api/customer", tags=["customer"])
+    print("✅ Customer routes loaded successfully")
+except Exception as e:
+    print(f"❌ Failed to load customer routes: {e}")
 
 @app.get("/")
 def read_root():

@@ -15,6 +15,8 @@ function AdminDashboard() {
     pendingRequests: 0
   })
   const [requests, setRequests] = useState([])
+  const [restaurants, setRestaurants] = useState([])
+  const [riders, setRiders] = useState([])
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -27,6 +29,8 @@ function AdminDashboard() {
         setToken(state.token)
         fetchStats(state.token)
         fetchRequests(state.token)
+        fetchRestaurants(state.token)
+        fetchRiders(state.token)
       } else {
         navigate('/login')
       }
@@ -58,6 +62,28 @@ function AdminDashboard() {
     }
   }
 
+  const fetchRestaurants = async (authToken) => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/admin/restaurants', {
+        headers: { Authorization: `Bearer ${authToken}` }
+      })
+      setRestaurants(response.data)
+    } catch (error) {
+      console.error('Error fetching restaurants:', error)
+    }
+  }
+
+  const fetchRiders = async (authToken) => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/admin/riders', {
+        headers: { Authorization: `Bearer ${authToken}` }
+      })
+      setRiders(response.data)
+    } catch (error) {
+      console.error('Error fetching riders:', error)
+    }
+  }
+
   const handleApprove = async (requestId) => {
     if (!window.confirm('Approve this request? An account will be created and credentials will be sent to their email.')) return
 
@@ -72,6 +98,8 @@ function AdminDashboard() {
       setMessage(`✅ ${response.data.message}`)
       fetchRequests(token)
       fetchStats(token)
+      fetchRestaurants(token)
+      fetchRiders(token)
     } catch (error) {
       setMessage(error.response?.data?.detail || 'Failed to approve request')
     } finally {
@@ -99,6 +127,82 @@ function AdminDashboard() {
       fetchStats(token)
     } catch (error) {
       setMessage('❌ ' + (error.response?.data?.detail || 'Failed to reject request'))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleUpdateRestaurantStatus = async (restaurantId, status, reason = null) => {
+    setLoading(true)
+    setMessage('')
+    try {
+      await axios.put(
+        `http://localhost:8000/api/admin/restaurants/${restaurantId}/status`,
+        { status, rejection_reason: reason },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      setMessage(`✅ Restaurant status updated to ${status}`)
+      fetchRestaurants(token)
+    } catch (error) {
+      setMessage('❌ ' + (error.response?.data?.detail || 'Failed to update restaurant status'))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteRestaurant = async (restaurantId) => {
+    if (!window.confirm('Are you sure you want to delete this restaurant? This will also delete the associated user account.')) return
+
+    setLoading(true)
+    setMessage('')
+    try {
+      await axios.delete(
+        `http://localhost:8000/api/admin/restaurants/${restaurantId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      setMessage('✅ Restaurant deleted successfully')
+      fetchRestaurants(token)
+      fetchStats(token)
+    } catch (error) {
+      setMessage('❌ ' + (error.response?.data?.detail || 'Failed to delete restaurant'))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleUpdateRiderStatus = async (riderId, status, reason = null) => {
+    setLoading(true)
+    setMessage('')
+    try {
+      await axios.put(
+        `http://localhost:8000/api/admin/riders/${riderId}/status`,
+        { status, rejection_reason: reason },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      setMessage(`✅ Rider status updated to ${status}`)
+      fetchRiders(token)
+    } catch (error) {
+      setMessage('❌ ' + (error.response?.data?.detail || 'Failed to update rider status'))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteRider = async (riderId) => {
+    if (!window.confirm('Are you sure you want to delete this rider? This will also delete the associated user account.')) return
+
+    setLoading(true)
+    setMessage('')
+    try {
+      await axios.delete(
+        `http://localhost:8000/api/admin/riders/${riderId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      setMessage('✅ Rider deleted successfully')
+      fetchRiders(token)
+      fetchStats(token)
+    } catch (error) {
+      setMessage('❌ ' + (error.response?.data?.detail || 'Failed to delete rider'))
     } finally {
       setLoading(false)
     }
@@ -335,7 +439,179 @@ function AdminDashboard() {
             </div>
           )}
 
-          {activeTab !== 'overview' && activeTab !== 'requests' && (
+          {activeTab === 'restaurants' && (
+            <div className="admin-card">
+              <h2>Restaurants Management</h2>
+              {message && (
+                <div className={`message ${message.includes('✅') ? 'success' : 'error'}`}>
+                  {message}
+                </div>
+              )}
+              <div className="requests-table">
+                {restaurants.length === 0 ? (
+                  <p className="no-data">No restaurants found</p>
+                ) : (
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>License</th>
+                        <th>Status</th>
+                        <th>Rating</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {restaurants.map((restaurant) => (
+                        <tr key={restaurant.id}>
+                          <td><strong>{restaurant.name}</strong></td>
+                          <td>{restaurant.email}</td>
+                          <td>{restaurant.phone}</td>
+                          <td>{restaurant.address}</td>
+                          <td>{restaurant.business_license}</td>
+                          <td>
+                            <span className={`badge ${restaurant.status}`}>
+                              {restaurant.status === 'open' ? '🟢 Open' : 
+                               restaurant.status === 'closed' ? '🔴 Closed' : 
+                               '❌ Rejected'}
+                            </span>
+                            {restaurant.rejection_reason && (
+                              <div className="rejection-reason">
+                                <small>Reason: {restaurant.rejection_reason}</small>
+                              </div>
+                            )}
+                          </td>
+                          <td>⭐ {restaurant.rating.toFixed(1)}</td>
+                          <td>
+                            <div className="action-buttons">
+                              <select 
+                                onChange={(e) => {
+                                  const value = e.target.value
+                                  if (value === 'rejected') {
+                                    const reason = prompt('Enter rejection reason:')
+                                    if (reason) handleUpdateRestaurantStatus(restaurant.id, value, reason)
+                                  } else if (value) {
+                                    handleUpdateRestaurantStatus(restaurant.id, value)
+                                  }
+                                  e.target.value = ''
+                                }}
+                                disabled={loading}
+                                className="status-select"
+                              >
+                                <option value="">Change Status</option>
+                                <option value="open">Open</option>
+                                <option value="closed">Closed</option>
+                                <option value="rejected">Reject</option>
+                              </select>
+                              <button
+                                onClick={() => handleDeleteRestaurant(restaurant.id)}
+                                disabled={loading}
+                                className="btn-delete"
+                              >
+                                🗑️ Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'riders' && (
+            <div className="admin-card">
+              <h2>Riders Management</h2>
+              {message && (
+                <div className={`message ${message.includes('✅') ? 'success' : 'error'}`}>
+                  {message}
+                </div>
+              )}
+              <div className="requests-table">
+                {riders.length === 0 ? (
+                  <p className="no-data">No riders found</p>
+                ) : (
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Vehicle</th>
+                        <th>License</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Rating</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {riders.map((rider) => (
+                        <tr key={rider.id}>
+                          <td><strong>{rider.full_name}</strong></td>
+                          <td>{rider.email}</td>
+                          <td>{rider.phone}</td>
+                          <td>{rider.vehicle_type}</td>
+                          <td>{rider.license_number}</td>
+                          <td>{rider.address}</td>
+                          <td>
+                            <span className={`badge ${rider.status}`}>
+                              {rider.status === 'available' ? '🟢 Available' : 
+                               rider.status === 'unavailable' ? '🟡 Unavailable' : 
+                               '❌ Rejected'}
+                            </span>
+                            {rider.rejection_reason && (
+                              <div className="rejection-reason">
+                                <small>Reason: {rider.rejection_reason}</small>
+                              </div>
+                            )}
+                          </td>
+                          <td>⭐ {rider.rating.toFixed(1)}</td>
+                          <td>
+                            <div className="action-buttons">
+                              <select 
+                                onChange={(e) => {
+                                  const value = e.target.value
+                                  if (value === 'rejected') {
+                                    const reason = prompt('Enter rejection reason:')
+                                    if (reason) handleUpdateRiderStatus(rider.id, value, reason)
+                                  } else if (value) {
+                                    handleUpdateRiderStatus(rider.id, value)
+                                  }
+                                  e.target.value = ''
+                                }}
+                                disabled={loading}
+                                className="status-select"
+                              >
+                                <option value="">Change Status</option>
+                                <option value="available">Available</option>
+                                <option value="unavailable">Unavailable</option>
+                                <option value="rejected">Reject</option>
+                              </select>
+                              <button
+                                onClick={() => handleDeleteRider(rider.id)}
+                                disabled={loading}
+                                className="btn-delete"
+                              >
+                                🗑️ Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab !== 'overview' && activeTab !== 'requests' && activeTab !== 'restaurants' && activeTab !== 'riders' && (
             <div className="admin-card">
               <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</h2>
               <p className="no-data">Content for {activeTab} will be displayed here</p>

@@ -334,3 +334,77 @@
   color: #991b1b;
   border: 1px solid #ef4444;
 }
+
+/* Status badges */
+.badge.open {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge.closed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.badge.available {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badge.unavailable {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.rejection-reason {
+  margin-top: 0.25rem;
+  font-style: italic;
+  color: #ef4444;
+}
+
+/* Status select dropdown */
+.status-select {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  background: white;
+  transition: border-color 0.3s;
+}
+
+.status-select:hover {
+  border-color: #7c3aed;
+}
+
+.status-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Delete button */
+.btn-delete {
+  padding: 0.5rem 1rem;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.btn-delete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

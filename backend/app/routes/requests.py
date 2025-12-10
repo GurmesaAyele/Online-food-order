@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.models import AccessRequest, User, RequestStatus
+from app.models import AccessRequest, User, RequestStatus, Restaurant, Rider, RestaurantStatus, RiderStatus
 from app.schemas import RestaurantRequest, RiderRequest, AccessRequestResponse
 from app.auth import get_password_hash, get_current_user
 from app.email_service import send_approval_email, send_rejection_email
@@ -133,6 +133,30 @@ def approve_request(
         role=role
     )
     db.add(new_user)
+    db.flush()  # Get the user ID
+    
+    # Create restaurant or rider record
+    if access_request.request_type == "restaurant":
+        restaurant = Restaurant(
+            user_id=new_user.id,
+            name=access_request.restaurant_name,
+            address=access_request.restaurant_address,
+            phone=access_request.phone,
+            business_license=access_request.business_license,
+            status=RestaurantStatus.open
+        )
+        db.add(restaurant)
+    else:  # rider
+        rider = Rider(
+            user_id=new_user.id,
+            full_name=access_request.full_name,
+            phone=access_request.phone,
+            vehicle_type=access_request.vehicle_type,
+            license_number=access_request.license_number,
+            address=access_request.address,
+            status=RiderStatus.available
+        )
+        db.add(rider)
     
     # Update request status
     access_request.status = RequestStatus.approved

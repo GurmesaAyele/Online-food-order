@@ -1,7 +1,27 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 import './Home.css'
 
 function Home() {
+  const [restaurants, setRestaurants] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchRestaurants()
+  }, [])
+
+  const fetchRestaurants = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/restaurant/all')
+      setRestaurants(response.data)
+    } catch (error) {
+      console.error('Error fetching restaurants:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="home">
       <nav className="navbar">
@@ -21,6 +41,59 @@ function Home() {
           <p>Order from your favorite restaurants and get it delivered to your doorstep</p>
           <Link to="/register" className="btn btn-large btn-primary">Order Now</Link>
         </div>
+      </section>
+
+      {/* Restaurants Section */}
+      <section className="restaurants-section">
+        <h2 className="section-title">Available Restaurants</h2>
+        <p className="section-subtitle">Discover amazing restaurants near you</p>
+        
+        {loading ? (
+          <div className="loading">Loading restaurants...</div>
+        ) : restaurants.length === 0 ? (
+          <div className="no-restaurants">
+            <p>No restaurants available at the moment. Check back soon!</p>
+          </div>
+        ) : (
+          <div className="restaurants-grid">
+            {restaurants.map((restaurant) => (
+              <div key={restaurant.id} className="restaurant-card">
+                {/* Restaurant Image */}
+                <div className="restaurant-image">
+                  {restaurant.images ? (
+                    <img src={restaurant.images} alt={restaurant.name} />
+                  ) : (
+                    <div className="restaurant-image-placeholder">
+                      🏪 {restaurant.name}
+                    </div>
+                  )}
+                </div>
+                
+                <div className="restaurant-header">
+                  <h3>{restaurant.name}</h3>
+                  <div className="restaurant-rating">
+                    ⭐ {restaurant.rating.toFixed(1)}
+                  </div>
+                </div>
+                <div className="restaurant-info">
+                  <p className="restaurant-cuisine">
+                    {restaurant.cuisine_type || 'Various Cuisines'}
+                  </p>
+                  <p className="restaurant-address">
+                    📍 {restaurant.address}
+                  </p>
+                  <p className="restaurant-phone">
+                    📞 {restaurant.phone}
+                  </p>
+                </div>
+                <div className="restaurant-footer">
+                  <span className="restaurant-status">🟢 Open</span>
+                  <Link to="/register" className="btn btn-small">Order Now</Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* How It Works */}
