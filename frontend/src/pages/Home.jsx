@@ -88,7 +88,7 @@ function Home() {
                 </div>
                 <div className="restaurant-footer">
                   <span className="restaurant-status">🟢 Open</span>
-                  <Link to="/register" className="btn btn-small">Order Now</Link>
+                  <Link to={`/restaurant/${restaurant.id}`} className="btn btn-small">View Menu</Link>
                 </div>
               </div>
             ))}

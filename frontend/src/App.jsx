@@ -8,6 +8,7 @@ import CustomerDashboard from './pages/CustomerDashboard'
 import RestaurantDashboard from './pages/RestaurantDashboard'
 import RiderDashboard from './pages/RiderDashboard'
 import AdminDashboard from './pages/AdminDashboard'
+import RestaurantMenu from './pages/RestaurantMenu'
 import './App.css'
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
           <Route path="/rider-dashboard" element={<RiderDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/restaurant/:restaurantId" element={<RestaurantMenu />} />
         </Routes>
       </div>
     </Router>

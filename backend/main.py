@@ -28,8 +28,8 @@ app.include_router(rider.router, prefix="/api/rider", tags=["rider"])
 
 # Customer routes
 try:
-    from app.routes import customer
-    app.include_router(customer.router, prefix="/api/customer", tags=["customer"])
+    from app.routes.customer import router as customer_router
+    app.include_router(customer_router, prefix="/api/customer", tags=["customer"])
     print("✅ Customer routes loaded successfully")
 except Exception as e:
     print(f"❌ Failed to load customer routes: {e}")

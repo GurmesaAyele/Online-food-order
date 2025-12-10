@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import './CustomerDashboard.css'
 
@@ -144,7 +144,7 @@ function CustomerDashboard() {
                 </div>
                 <div className="restaurant-footer">
                   <span className="restaurant-status">🟢 Open</span>
-                  <button className="btn btn-small btn-primary">View Menu</button>
+                  <Link to={`/restaurant/${restaurant.id}`} className="btn btn-small btn-primary">View Menu</Link>
                 </div>
               </div>
             ))}
